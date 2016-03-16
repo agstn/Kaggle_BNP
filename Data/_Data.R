@@ -34,8 +34,8 @@ comb <- randomForest::na.roughfix(comb)
 
 #' Export
 train2 <- comb[1:nrow(train),]
-train2$target <- train$target
+train2$target <- as.factor(train$target)
 saveRDS(train2,paste0(loc_out,"/train.rds"))
 
 test2  <- comb[(nrow(train)+1):nrow(comb),]
-saveRDS(test2,paste0(loc_out,"/test.RDS"))
+saveRDS(test2,paste0(loc_out,"/test.rds"))
