@@ -7,6 +7,10 @@ if (Sys.info()['sysname']=="Windows") {
   loc_out  <- "/home/acalatroni/Kaggle_BNP/Anly/S01"
 }
 
+#' Packages
+pacman::p_load(pacman)
+p_load(h2o,h2oEnsemble)
+
 #' Start h2o
 h2o.init(nthreads=-1)
 
@@ -41,21 +45,14 @@ fit <- h2o.ensemble(x = x,
                     cvControl = list(V=5)
 )
 
+#h2o.save_ensemble(fit, path = paste0(loc_out,"/h2oe_fit"), force = FALSE, export_levelone = FALSE)
+
 perf <- h2o.ensemble_performance(fit, newdata = splits[[2]])
 print(perf,metric="logloss")
 
-#' Base learner test set AUC (for comparison)
-L <- length(learner)
-auc <- sapply(seq(L), function(l) perf$base[[l]]@metrics$AUC)
-data.frame(learner, auc)
-
 #' Predict
-# p <- predict(fit, splits[[2]])
-# labels = as.data.frame(splits[[2]][,"target"])
+p       <- predict.h2o.ensemble(fit,test_h2o)
+p1      <- as.vector(p$pred[,"p1"])
 
-p       <- as.data.frame(predict.h2o.ensemble(fit,test))
-testIds <- as.data.frame(test$ID)
-
-submission <- data.frame(cbind(testIds,p$p1))
-colnames(submission)<-c("ID","PredictedProb")
+submission <- data.frame(ID=test$ID,PredictedProb=p1)
 write_csv(submission,paste0(loc_out,"/submission.csv"))
