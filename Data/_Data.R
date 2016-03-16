@@ -9,7 +9,7 @@ if (Sys.info()['sysname']=="Windows") {
 
 #' libraries
 pacman::p_load(pacman)
-p_load(h2o,h2oEnsemble,readr,dplyr)
+p_load(readr,dplyr)
 
 #' Import data
 test  <- read_csv(paste0(loc_in,"/test.csv.zip"))
