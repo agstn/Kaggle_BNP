@@ -55,4 +55,8 @@ p       <- predict.h2o.ensemble(fit,test_h2o)
 p1      <- as.vector(p$pred[,"p1"])
 
 submission <- data.frame(ID=test$ID,PredictedProb=p1)
+<<<<<<< HEAD
 write_csv(submission,paste0(loc_out,"/submission.csv"))
+=======
+write_csv(submission,paste0(loc_out,"/submission.csv"))
+>>>>>>> 6f4e1290910a5b0a1660eb8f77ea6b32e804d124
